@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
 using namespace std;
 
@@ -35,6 +37,27 @@ void packet_handler(u_char *args,
     cout << "Packet Length : "
          << header->len
          << " bytes" << endl;
+
+const u_char *ipHeader = packet + 14;
+
+    char srcIP[INET_ADDRSTRLEN];
+    char dstIP[INET_ADDRSTRLEN];
+
+    inet_ntop(AF_INET,
+              ipHeader + 12,
+              srcIP,
+              INET_ADDRSTRLEN);
+
+    inet_ntop(AF_INET,
+              ipHeader + 16,
+              dstIP,
+              INET_ADDRSTRLEN);
+
+    cout << "Source IP     : "
+         << srcIP << endl;
+
+    cout << "Destination IP: "
+         << dstIP << endl;  
 
     cout << "-------------------------------------\n";
 }
